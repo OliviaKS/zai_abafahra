@@ -106,6 +106,7 @@ function draw() {
   acc.set(0, map(_alpha, 0, wertSlider, -force, force));
   text('Alpha ' + _alpha, 20, 20);
 
+  //zurücksetzen der Geschwindigekeit bei Extremwerten funktioniert nicht, weshalb?
   if (fluchtpunkt.y <= 0){
       vel_fluchtpunkt.set(0,0);
       }
@@ -127,6 +128,8 @@ function draw() {
   mountains.y = constrain(mountains.y,398.095,600);
 
 
+  //SKI-RILLEN ZEICHNEN
+
   stroke('#eef8fc');
   for (var i = 0; i < endpunkte.length; i++) {
     var aktuellerEndpunkt = endpunkte[i];
@@ -139,9 +142,8 @@ function draw() {
   }
 
 
-  //SCHNEE
+  //SCHNEEFLOCKEN
   //======point force, z.B. um Forwärtsgeschwindigkeit zu simulieren
-  //var pforce = map(mouseX,0,width,0,0.5);
   var pforce = map(_alpha, 0, wertSlider, 0, 0.65);
   snow.setPointForce(pforce);
 
@@ -154,15 +156,13 @@ function draw() {
 
   text('Fluchtpunkt.y ' + fluchtpunkt.y, 20,40);
 
-  // POLYGON FÜR SCHNEEHINTERGRUND
+  // POLYGON FÜR SCHNEEHINTERGRUND --> ALT
  // PisteObenLinks = p5.Vector.lerp(PisteLinks,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
  // PisteObenRechts = p5.Vector.lerp(PisteRechts,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
   //quad(PisteLinks.x,PisteLinks.y,PisteRechts.x,PisteRechts.y,PisteObenRechts.x,PisteObenRechts.y,PisteObenLinks.x,PisteObenLinks.y);
   //quad(-700,height,700,height,width,v.y,0,v.y);
  // rect(0,height-v.y,width,v.y);
 
-
-  //SKIPISTE ENDE
 
 
 //SKI ROTATION
