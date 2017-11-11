@@ -7,8 +7,8 @@ function snowMachine(n) {
     var flakeSize = [];
     var direction = [];
     var age = [];
-    var minFlakeSize = 2;
-    var maxFlakeSize = 5;
+    var minFlakeSize = 1.5;
+    var maxFlakeSize = 6;
     var linearForce = 0;
     var appearTime = 10;
     var yBooster = 1;
