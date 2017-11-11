@@ -24,7 +24,10 @@ var snow;
 //SKI
 var linkerSki;
 var rechterSki;
-var rotation = 0;
+var rotationLinks = 0;
+var rotationRechts = 0;
+var winkelLinkerSki = 0;
+var winkelRechterSki = 0;
 
 //SZENERIE
 var mountains;
@@ -42,6 +45,7 @@ function setup() {
   createCanvas(1024, 768);
   frameRate(30);
   imageMode(CENTER);
+  angleMode(DEGREES);
 
 
   //ENDPUNKTE SKIPISTE GENERIEREN
@@ -102,10 +106,6 @@ function draw() {
   acc.set(0, map(_alpha, 0, wertSlider, -force, force));
   text('Alpha ' + _alpha, 20, 20);
 
-
-  vel_fluchtpunkt.add(acc);
-  //fluchtpunkt.add(vel_fluchtpunkt);
-
   if (fluchtpunkt.y <= 0){
       vel_fluchtpunkt.set(0,0);
       }
@@ -113,6 +113,7 @@ function draw() {
         vel_fluchtpunkt.set(0,0);
       }
 
+  vel_fluchtpunkt.add(acc);
   fluchtpunkt.add(vel_fluchtpunkt);
   fluchtpunkt.y = constrain(fluchtpunkt.y, 0, height - 150);
 
@@ -164,8 +165,31 @@ function draw() {
   //SKIPISTE ENDE
 
 
-  image(linkerSki,width/2-25,height+20);
-  image(rechterSki,width/2+25,height+20);
+//SKI ROTATION
+//noch einfügen, dass sobald Extremwert erreicht, rotationLinks resp. rechts wieder auf 0 gesetzt wird
+//x-position der Skier verändert sich nicht;
+//wie kann ich x-position eines bildes ansprechen?
+  push();
+  translate(477,788);
+  winkelLinkerSki = map(_alpha,0,wertSlider,0.1,-0.1);
+  rotationLinks = constrain(rotationLinks,0,20);
+  rotationLinks = rotationLinks + winkelLinkerSki;
+  rotate(rotationLinks);
+  image(linkerSki,0,0);
+  this.x = constrain(this.x, 467,487);
+  this.x = this.x - 10*winkelLinkerSki;
+  pop();
+
+  push();
+  translate(547,788);
+  winkelRechterSki = map(_alpha,0,wertSlider,-0.1,0.1);
+  rotationRechts = constrain(rotationRechts,-20,0);
+  rotationRechts = rotationRechts + winkelRechterSki;
+  rotate(rotationRechts);
+  image(rechterSki,0,0);
+  this.x = constrain(this.x, 537,557);
+  this.x = this.x + 10*winkelRechterSki;
+  pop();
 
 
 
