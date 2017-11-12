@@ -77,7 +77,7 @@ function setup() {
   snow.setFlakeSize(1.5,6);
 
   //SLIDER
-  slider = createSlider (0,0.7,0.3,0);
+  slider = createSlider (0,0.7,0.62,0);
   slider.position(20,60);
   slider.style('width','200px');
 
@@ -89,7 +89,7 @@ function draw() {
   //background('#f4fafe');
   //Hintergrund zum Arbeiten/Testen/Pröblen:
   background('#d7eef9');
-  //stroke('#9fa4a5');
+  //stroke('#eef8fc');
   fill('white');
   image(mountains,512,500);
 
@@ -125,7 +125,7 @@ function draw() {
   //mountains.y = constrain(mountains.y, 398.095,600);
   vel_mountains = vel_mountains + map(_alpha,0,wertSlider,-0.1,0.1);
   mountains.y = mountains.y + vel_mountains;
-  mountains.y = constrain(mountains.y,398.095,600);
+  mountains.y = constrain(mountains.y,400,600);
 
 
   //SKI-RILLEN ZEICHNEN
@@ -135,20 +135,22 @@ function draw() {
     var aktuellerEndpunkt = endpunkte[i];
     var v = p5.Vector.lerp(aktuellerEndpunkt,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
     //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);
-    /*noStroke();
-    rect(0,v.y,width,height-v.y);
-    stroke('#eef8fc');*/
+    noStroke();
+    fill('#ffffff');
+    //rect(0,v.y,width,height-v.y);
+    //stroke('#eef8fc'); --> erst bei finaler Version, zum pröbeln mit schwarz arbeiten
+    stroke('black');
     line(v.x,v.y,aktuellerEndpunkt.x,aktuellerEndpunkt.y);
   }
 
 
   //SCHNEEFLOCKEN
-  //======point force, z.B. um Forwärtsgeschwindigkeit zu simulieren
+  //point force um Forwärtsgeschwindigkeit zu simulieren
   var pforce = map(_alpha, 0, wertSlider, 0, 0.65);
   snow.setPointForce(pforce);
 
   //======flake weight, je schwerer desto schneller fallen die Flocken
-  //var weight = map(_alpha,0,wertSlider,0,2);
+  //var weight = map(_alpha,0,slider.value,0,2);
   //snow.setFlakeWeight(weight);
 
   snow.draw();
