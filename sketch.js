@@ -17,6 +17,7 @@ var PisteRechts;
 var PisteObenLinks;
 var PisteObenRechts;
 var wertSlider;
+//test
 
 //SCHNEE
 var snow;
