@@ -177,10 +177,12 @@ function draw() {
   winkelLinkerSki = map(_alpha,0,wertSlider,0.1,-0.1);
   rotationLinks = constrain(rotationLinks,0,20);
   rotationLinks = rotationLinks + winkelLinkerSki;
+  var xCorrection = -rotationLinks*3;
+  translate(xCorrection,0);
   rotate(rotationLinks);
   image(linkerSki,0,0);
-  this.x = constrain(this.x, 467,487);
-  this.x = this.x - 10*winkelLinkerSki;
+  // this.x = constrain(this.x, 467,487);
+  // this.x = this.x - 10*winkelLinkerSki;
   pop();
 
   push();
@@ -190,9 +192,11 @@ function draw() {
   rotationRechts = rotationRechts + winkelRechterSki;
   rotate(rotationRechts);
   image(rechterSki,0,0);
-  this.x = constrain(this.x, 537,557);
-  this.x = this.x + 10*winkelRechterSki;
+  // this.x = constrain(this.x, 537,557);
+  // this.x = this.x + 10*winkelRechterSki;
   pop();
+
+
 
 
 
