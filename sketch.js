@@ -33,11 +33,22 @@ var winkelRechterSki = 0;
 //SZENERIE
 var mountains;
 var vel_mountains;
+var mountains_hoehe;
+//var sky_y = 723;
+var sky_y;
+var sky_acc;
+var sky_vel;
+var sky;
+var sky2;
+var sky3;
 
 function preload(){
   linkerSki = loadImage('img/ski_zai.png');
   rechterSki = loadImage('img/ski_zai.png');
   mountains = loadImage('img/mountain_bg.png');
+  sky = loadImage('img/sky_v1.png');
+  sky2 = loadImage ('img/sky_v2.png');
+  sky3 = loadImage('img/sky_v3.png');
 }
 
 
@@ -60,9 +71,8 @@ function setup() {
   //VEKTOREN KREIEREN
   vel_fluchtpunkt = createVector(0, 0);
   fluchtpunkt = createVector(width / 2, height / 2);
-  //vel_mountains = createVector(0,0);
-  //mountains = createVector(512,500);
   vel_mountains = 0;
+  mountains_hoehe = 0;
   acc = createVector(0, 0);
   PisteLinks = createVector(-700,height);
   PisteRechts = createVector(700,height);
@@ -89,18 +99,35 @@ function draw() {
   //BASICS
   //background('#f4fafe');
   //Hintergrund zum Arbeiten/Testen/Pröblen:
-  background('#d7eef9');
+  background('#d7eef9')
   //stroke('#eef8fc');
   fill('white');
-  image(mountains,512,500);
 
   //SLIDER
   wertSlider = slider.value();
-  text('Max. AlphaWert ' + wertSlider,20,90);
-
+  //text('Max. AlphaWert ' + wertSlider,20,90);
 
   //ALPHA-WERTE HOLEN
   var _alpha = muse.getAlpha();
+
+  //HINTERGRUND EINFÜGEN
+  //image(sky,512,-339);
+  //image(sky2,512,-339);
+  image(sky3,512,-339);
+  /*sky_acc = map(_alpha,0,wertSlider,2,-2);
+  sky_vel = sky_vel + sky_acc;
+  sky_y = sky_y + sky_vel;
+  sky_y = constrain(sky_y, 1107,-339);*/
+  //image(sky3,512,sky_y);
+
+  text('Max. AlphaWert ' + wertSlider,20,90);
+
+  //BERGKETTE AN ALPHAWERTE KNÜPFEN
+  /*vel_mountains = vel_mountains + map(_alpha,0,wertSlider,-1,1);
+  mountains_hoehe = mountains_hoehe + vel_mountains;
+  mountains_hoehe = constrain(mountains_hoehe,400,600);
+  image(mountains,512,mountains_hoehe);*/
+  image(mountains,512,500);
 
   //SKIPISTE
   //DYN.SCHWELLE HIER EINBAUEN
@@ -119,28 +146,32 @@ function draw() {
   fluchtpunkt.add(vel_fluchtpunkt);
   fluchtpunkt.y = constrain(fluchtpunkt.y, 0, height - 150);
 
-  //KANN EIN VECTOR AUCH EIN BILD ENTHALTEN?
-  //bezieht sich auf Veränderung mountains.y entsprechend den alpha-Werten
-  //vel_mountains.add(acc);
-  //mountains.add(vel_mountains);
-  //mountains.y = constrain(mountains.y, 398.095,600);
-  vel_mountains = vel_mountains + map(_alpha,0,wertSlider,-0.1,0.1);
+  //BERGKETTE ALTER VERSUCH
+  /*vel_mountains = vel_mountains + map(_alpha,0,wertSlider,-0.1,0.1);
   mountains.y = mountains.y + vel_mountains;
-  mountains.y = constrain(mountains.y,400,600);
+  mountains.y = constrain(mountains.y,400,600);*/
 
+
+
+  //HINTERGRUND SKIPISTE
+  //noch nicht elegant -- gleicher Code folgt unten in for-Schlaufe
+  var v = p5.Vector.lerp(endpunkte[0],fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
+  //fill('#ffffff');
+  fill('#ebf6fb');
+  //fill('#dbdfe1');
+  rect(0,v.y,width,height-v.y);
 
   //SKI-RILLEN ZEICHNEN
 
-  stroke('#eef8fc');
+  //stroke('#eef8fc');
+  stroke('#dbdfe1');
   for (var i = 0; i < endpunkte.length; i++) {
     var aktuellerEndpunkt = endpunkte[i];
     var v = p5.Vector.lerp(aktuellerEndpunkt,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
     //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);
-    noStroke();
-    fill('#ffffff');
-    //rect(0,v.y,width,height-v.y);
+    //fill('#ffffff');
     //stroke('#eef8fc'); --> erst bei finaler Version, zum pröbeln mit schwarz arbeiten
-    stroke('black');
+    stroke('#dbdfe1');
     line(v.x,v.y,aktuellerEndpunkt.x,aktuellerEndpunkt.y);
   }
 
@@ -159,41 +190,29 @@ function draw() {
 
   text('Fluchtpunkt.y ' + fluchtpunkt.y, 20,40);
 
-  // POLYGON FÜR SCHNEEHINTERGRUND --> ALT
- // PisteObenLinks = p5.Vector.lerp(PisteLinks,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
- // PisteObenRechts = p5.Vector.lerp(PisteRechts,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
-  //quad(PisteLinks.x,PisteLinks.y,PisteRechts.x,PisteRechts.y,PisteObenRechts.x,PisteObenRechts.y,PisteObenLinks.x,PisteObenLinks.y);
-  //quad(-700,height,700,height,width,v.y,0,v.y);
- // rect(0,height-v.y,width,v.y);
-
-
 
 //SKI ROTATION
 //noch einfügen, dass sobald Extremwert erreicht, rotationLinks resp. rechts wieder auf 0 gesetzt wird
-//x-position der Skier verändert sich nicht;
-//wie kann ich x-position eines bildes ansprechen?
   push();
-  translate(477,788);
+  translate(487,788);
   winkelLinkerSki = map(_alpha,0,wertSlider,0.1,-0.1);
   rotationLinks = constrain(rotationLinks,0,20);
   rotationLinks = rotationLinks + winkelLinkerSki;
-  var xCorrection = -rotationLinks*3;
+  var xCorrection = -rotationLinks*1.8;
   translate(xCorrection,0);
   rotate(rotationLinks);
   image(linkerSki,0,0);
-  // this.x = constrain(this.x, 467,487);
-  // this.x = this.x - 10*winkelLinkerSki;
   pop();
 
   push();
-  translate(547,788);
+  translate(537,788);
   winkelRechterSki = map(_alpha,0,wertSlider,-0.1,0.1);
   rotationRechts = constrain(rotationRechts,-20,0);
   rotationRechts = rotationRechts + winkelRechterSki;
+  var xCorrectionRechts = -rotationRechts*1.8;
+  translate(xCorrectionRechts,0);
   rotate(rotationRechts);
   image(rechterSki,0,0);
-  // this.x = constrain(this.x, 537,557);
-  // this.x = this.x + 10*winkelRechterSki;
   pop();
 
 

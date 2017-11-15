@@ -1,7 +1,7 @@
 function snowMachine(n) {
     "use strict";
     //snow library based on https://www.openprocessing.org/sketch/395389
-    var quantity = n || 200;
+    var quantity = n || 800;
     var xPosition = [];
     var yPosition = [];
     var flakeSize = [];
