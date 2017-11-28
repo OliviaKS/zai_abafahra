@@ -90,7 +90,8 @@ function setup() {
   //ENDPUNKTE SKIPISTE GENERIEREN
   for (var i = 0; i < n; i++) {
    // var x = map(i, 0, n, -700, width + 700);
-    var x = map(i,0,n,-1400,width+1400);
+    //var x = map(i,0,n,-1400,width+1400);
+    var x = map(i,0,n,-6300,width+6300);
     var y = height;
     var p = createVector(x, y);
     endpunkte.push(p);
@@ -169,7 +170,7 @@ function draw() {
   //HINTERGRUND SKIPISTE
   //noch nicht elegant -- gleicher Code folgt unten in for-Schlaufe
   var v = p5.Vector.lerp(endpunkte[0],fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
-  fill('#dbdfe1');
+  fill('#fcfcfc');
   noStroke();
   rect(0,v.y,width,height-v.y);
 
@@ -183,7 +184,8 @@ function draw() {
     //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);
     //stroke('#eef8fc'); --> erst bei finaler Version, zum pröbeln mit schwarz arbeiten
     //stroke('#dbdfe1');
-    stroke('white');
+    //stroke('#d8dad9');
+    stroke(216,218,217,210);
     line(v.x,v.y,aktuellerEndpunkt.x,aktuellerEndpunkt.y);
   }
 
@@ -201,37 +203,6 @@ function draw() {
 
 
 //SKI ROTATION
-  /*push();
-  translate(467,1090);
-  if (_alpha > threshold){
-    dir_ski = -speed_ski;
-  }
-  else if (_alpha < threshold){
-    dir_ski = speed_ski;
-  }
-  else {
-    dir_ski = 0;
-  }
-  rotationLinks = constrain(rotationLinks,0,25);
-  rotationLinks = rotationLinks + dir_ski;
-  var xCorrection = constrain(xCorrection,268,467);
-  var xCorrection = -rotationLinks*7;
-  translate(xCorrection,0);
-  rotate(rotationLinks);
-  //scale(0.8);
-  image(linkerSki2,0,0);
-  pop();*/
-
- /*push();
-  translate(467,1090);
-  rotationLinks = map(fluchtpunkt.y,0,height-150,25,0);
-  var xCorrection = constrain(xCorrection,268,467);
-  xCorrection = -rotationLinks*7;
-  translate(xCorrection,0);
-  rotate(rotationLinks);
-  image(linkerSki2,0,0);
-  pop();*/
-
   push();
   translate(467,1090);
   rotationLinks = map(fluchtpunkt.y,0,height-150,25,0);
@@ -242,29 +213,6 @@ function draw() {
   rotate(rotationLinks);
   image(linkerSki2,0,0);
   pop();
-
-
-
-
-  /*push();
-  translate(557,1090);
-  if (_alpha > threshold){
-    dir_ski_r = speed_ski_r;
-  }
-  else if (_alpha < threshold){
-    dir_ski_r = -speed_ski_r;
-  }
-  else {
-    dir_ski_r = 0;
-  }
-  rotationRechts = constrain(rotationRechts,-25,0);
-  rotationRechts = rotationRechts + dir_ski_r;
-  var xCorrectionRechts = constrain(xCorrectionRechts,557,756);
-  var xCorrectionRechts = -rotationRechts*7;
-  translate(xCorrectionRechts,0);
-  rotate(rotationRechts);
-  image(rechterSki2,0,0);
-  pop();*/
 
 
   push();
@@ -278,15 +226,6 @@ function draw() {
   image(rechterSki2,0,0);
   pop();
 
-  /*push();
-  translate(557,1090);
-  rotationRechts = map(fluchtpunkt.y,0,height-150,-25,0);
-  var xCorrectionRechts = constrain(xCorrectionRechts,0,199);
-  xCorrectionRechts = rotationRechts*7;
-  translate(xCorrectionRechts,0);
-  rotate(rotationRechts);
-  image(rechterSki2,0,0);
-  pop();*/
 
   
 //SKIBRILLE
