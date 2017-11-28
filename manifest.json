@@ -1,0 +1,8 @@
+{
+  "manifest_version": 1,
+  "name": "Abafahra",
+  "version": "1.0",
+  "display": "standalone",
+  "background_color":"rgb(255,255,255)",
+  "orientation": "landscape"
+}

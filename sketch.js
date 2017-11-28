@@ -1,6 +1,6 @@
 //VERBINDUNG ZU MUSEGERÄT AUFBAUEN
-//var muse = musedata.connect();
-var muse = musedata.fake();
+var muse = musedata.connect('http://127.0.1:8081');
+//var muse = musedata.fake();
 var tresh = dynamicThreshold();
 
 //SKIPISTE
@@ -32,11 +32,13 @@ var rotationLinks = 10;
 var rotationRechts = -10;
 var winkelLinkerSki = 0;
 var winkelRechterSki = 0;
+var linkerSkiZ;
+var rechterSkiZ;
 
 var dir_ski = 0;
-var speed_ski = 0.1;
+var speed_ski = 0.05;
 var dir_ski_r = 0;
-var speed_ski_r = 0.1;
+var speed_ski_r = 0.05;
 
 //SZENERIE
 var mountains;
@@ -61,13 +63,10 @@ var sky6;
 var goggles;
 
 function preload(){
-  linkerSki = loadImage('img/ski_zai.png');
   linkerSki2 = loadImage('img/ski_zai_v3.png');
-  rechterSki = loadImage('img/ski_zai.png');
   rechterSki2 = loadImage('img/ski_zai_v3.png');
   mountains = loadImage('img/mountain_bg.png');
   sky = loadImage('img/sky_v1.png');
-  sky2 = loadImage ('img/sky_v2.png');
   sky3 = loadImage('img/sky_v3.png');
   sky4 = loadImage('img/sky_v4.png');
   sky5 = loadImage('img/sky_v5.png');
@@ -79,7 +78,7 @@ function preload(){
 
 function setup() {
   //BASICS
-  createCanvas(1024, 768);
+  createCanvas(1024,768);
   frameRate(30);
   imageMode(CENTER);
   angleMode(DEGREES);
@@ -91,7 +90,6 @@ function setup() {
   //BERGKETTE
   y_mountains = 550;
   dir_mountains = 0;
-
 
   //ENDPUNKTE SKIPISTE GENERIEREN
   for (var i = 0; i < n; i++) {
@@ -114,17 +112,21 @@ function setup() {
   PisteObenRechts = createVector(0,0);
 
   //SCHNEE
-  snow = snowMachine();
+  snow = snowMachine(200);
   //center of the point force, um die Bewegunsrichtung zu setzen
   snow.setCenter(width/2,height/2);
 
   //set the flake min size and max size
   snow.setFlakeSize(1.5,8);
 
+
+  //SKI
+  scale_ski = 0.5;
+
   //SLIDER
-  /*slider = createSlider (0,0.7,0.62,0);
+  slider = createSlider (0,0.7,0.1,0);
   slider.position(20,60);
-  slider.style('width','200px');*/
+  slider.style('width','200px');
 
 }
 
@@ -132,133 +134,60 @@ function setup() {
 function draw() {
   //BASICS
   background('#d7eef9')
-  //stroke('#eef8fc');
   fill('white');
 
   //SLIDER
-  //wertSlider = slider.value();
+  wertSlider = slider.value();
 
   //ALPHA-WERTE HOLEN
   var _alpha = muse.getAlpha();
+  //var _alpha = wertSlider;
   var threshold = tresh.threshold(_alpha);
+  var fitness = (_alpha - threshold);
 
-  //HINTERGRUND EINFÜGEN
-  //image(sky,512,-339);
-  //image(sky2,512,-339);
-  //image(sky3,512,-339);
-  /*sky_acc = map(_alpha,0,threshold,2,-2);
-  sky_vel = sky_vel + sky_acc;
-  sky_y = sky_y + sky_vel;
-  sky_y = constrain(sky_y, 1107,-339);
-  image(sky3,512,sky_y);*/
+  acc.set(0,2*fitness);
+  vel_fluchtpunkt.add(acc);
+  vel_fluchtpunkt.mult(0.97);
+  //Widerstand eingebaut durch mult - sobald keine acc mehr geht vel weg bis 0
+  fluchtpunkt.add(vel_fluchtpunkt);
 
-  //SKY EINBETTEN UND AN ALPHA ANKNÜPFEN
-  if(_alpha > threshold){
-    dir_sky = vel_sky;
-  }
-  else if(_alpha < threshold){
-    dir_sky = -vel_sky;
-  }
-  else{
-    dir_sky = 0;
-  };
-
-  //UPDATE YPOS SKY
-  y_sky = y_sky + dir_sky;
-  y_sky = constrain(y_sky,-354,1100);
-  //image(sky5,512,y_sky);
-  image(sky7,512,384);
-
- //text('Max. AlphaWert ' + wertSlider,20,90);
-  fill('purple');
-  text('Alpha ' + _alpha,20,60);
-  text('Dyn. Schwelle ' + threshold,20,80);
-
-  //BERGKETTE AN ALPHAWERTE KNÜPFEN
-  /*vel_mountains = vel_mountains + map(_alpha,0,wertSlider,-1,1);
-  mountains_hoehe = mountains_hoehe + vel_mountains;
-  mountains_hoehe = constrain(mountains_hoehe,400,600);
-  image(mountains,512,mountains_hoehe);*/
-  //image(mountains,512,500);
-
-  //BERGKETTE EINFÜGEN UND AN ALPHA KNÜPFEN
-
-  if(_alpha > threshold){
-    dir_mountains = -vel_mountains;
-  }
-  else if(_alpha < threshold){
-    dir_mountains = vel_mountains;
-  }
-  else{
-    dir_mountains = 0;
-  };
-
-
-  //UPDATE YPOS BERGKETTE
-  y_mountains = y_mountains + dir_mountains;
-  y_mountains = constrain(y_mountains,500,600);
-  image(mountains,512,y_mountains);
-
-
-  //SKIPISTE
-  //DYN.SCHWELLE HIER EINBAUEN
-  /*acc.set(0, map(_alpha, 0, threshold, -force, force));
-  text('Alpha ' + _alpha, 20, 20);
-
-  //zurücksetzen der Geschwindigekeit bei Extremwerten funktioniert nicht, weshalb?
-  if (fluchtpunkt.y <= 0){
+  if (fluchtpunkt.y < 0){
+    fluchtpunkt.y = 0;
       vel_fluchtpunkt.set(0,0);
       }
-      else if(fluchtpunkt.y>=height-150){
+      else if(fluchtpunkt.y>height-150){
+        fluchtpunkt.y = height-150;
         vel_fluchtpunkt.set(0,0);
       }
 
-  vel_fluchtpunkt.add(acc);
-  fluchtpunkt.add(vel_fluchtpunkt);
-  fluchtpunkt.y = constrain(fluchtpunkt.y, 0, height - 150);*/
+  y_sky = map(fluchtpunkt.y,0,height-150,1100,-354);
+  image(sky7,512,y_sky);
 
-  if (_alpha < threshold){
-    acc.set(0,-force);
-  }
-  else if (_alpha > threshold){
-    acc.set(0,force);
-  }
-  else{
-    acc.set(0,0);
-  };
+  y_mountains = map(fluchtpunkt.y,0,height-150,600,500);
+  image(mountains,512,y_mountains);
 
-  if (fluchtpunkt.y <= 0){
-    vel_fluchtpunkt.set(0,0);
-  }
-  else if(fluchtpunkt.y >= (height-150)){
-    vel_fluchtpunkt.set(0,0);
-  }
-  else{
-    vel_fluchtpunkt = vel_fluchtpunkt;
-  };
 
-  vel_fluchtpunkt.add(acc);
-  fluchtpunkt.add(vel_fluchtpunkt);
-  fluchtpunkt.y = constrain(fluchtpunkt.y,0,height-150);
+ //text('Max. AlphaWert ' + wertSlider,20,90);
+  fill('purple');
+  text('Alpha ' + _alpha*100,20,60);
+  text('Dyn. Schwelle ' + threshold*100,20,80);
 
 
   //HINTERGRUND SKIPISTE
   //noch nicht elegant -- gleicher Code folgt unten in for-Schlaufe
   var v = p5.Vector.lerp(endpunkte[0],fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
-  //fill('#ffffff');
   fill('#dbdfe1');
   noStroke();
   rect(0,v.y,width,height-v.y);
 
-  //SKI-RILLEN ZEICHNEN
 
+  //SKI-RILLEN ZEICHNEN
   //stroke('#eef8fc');
   stroke('#dbdfe1');
   for (var i = 0; i < endpunkte.length; i++) {
     var aktuellerEndpunkt = endpunkte[i];
     var v = p5.Vector.lerp(aktuellerEndpunkt,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
     //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);
-    //fill('#ffffff');
     //stroke('#eef8fc'); --> erst bei finaler Version, zum pröbeln mit schwarz arbeiten
     //stroke('#dbdfe1');
     stroke('white');
@@ -268,34 +197,18 @@ function draw() {
 
   //SCHNEEFLOCKEN
   //point force um Forwärtsgeschwindigkeit zu simulieren
-  var pforce = map(_alpha, 0, threshold, 0, 0.65);
+  var pforce = map(fluchtpunkt.y,0,height-150, 0, 0.65);
   snow.setPointForce(pforce);
-
-
-  //======flake weight, je schwerer desto schneller fallen die Flocken
-  //var weight = map(_alpha,0,slider.value,0,2);
-  //snow.setFlakeWeight(weight);
-
+  snow.setCenter(width/2,fluchtpunkt.y);
   snow.draw();
+
 
   fill('purple');
   text('Fluchtpunkt.y ' + fluchtpunkt.y, 20,100);
 
 
 //SKI ROTATION
-//noch einfügen, dass sobald Extremwert erreicht, rotationLinks resp. rechts wieder auf 0 gesetzt wird
- /* push();
-  translate(487,788);
-  winkelLinkerSki = map(_alpha,0,threshold,0.1,-0.1);
-  rotationLinks = constrain(rotationLinks,0,20);
-  rotationLinks = rotationLinks + winkelLinkerSki;
-  var xCorrection = -rotationLinks*1.8;
-  translate(xCorrection,0);
-  rotate(rotationLinks);
-  image(linkerSki,0,0);
-  pop();*/
-
-  push();
+  /*push();
   translate(467,1090);
   if (_alpha > threshold){
     dir_ski = -speed_ski;
@@ -314,9 +227,21 @@ function draw() {
   rotate(rotationLinks);
   //scale(0.8);
   image(linkerSki2,0,0);
-  pop();
+  pop();*/
 
   push();
+  translate(467,1090);
+  rotationLinks = map(fluchtpunkt.y,0,height-150,25,0);
+  var xCorrection = constrain(xCorrection,268,467);
+  xCorrection = -rotationLinks*7;
+  translate(xCorrection,0);
+  rotate(rotationLinks);
+  image(linkerSki2,0,0);
+  pop();
+
+
+
+  /*push();
   translate(557,1090);
   if (_alpha > threshold){
     dir_ski_r = speed_ski_r;
@@ -334,22 +259,24 @@ function draw() {
   translate(xCorrectionRechts,0);
   rotate(rotationRechts);
   image(rechterSki2,0,0);
-  pop();
-
-  /*push();
-  translate(537,788);
-  winkelRechterSki = map(_alpha,0,threshold,-0.1,0.1);
-  rotationRechts = constrain(rotationRechts,-20,0);
-  rotationRechts = rotationRechts + winkelRechterSki;
-  var xCorrectionRechts = -rotationRechts*1.8;
-  translate(xCorrectionRechts,0);
-  rotate(rotationRechts);
-  image(rechterSki,0,0);
   pop();*/
 
 
+  push();
+  translate(557,1090);
+  rotationRechts = map(fluchtpunkt.y,0,height-150,-25,0);
+  var xCorrectionRechts = constrain(xCorrectionRechts,557,756);
+  xCorrectionRechts = -rotationRechts*7;
+  translate(xCorrection,0);
+  rotate(rotationRechts);
+  image(rechterSki2,0,0);
+  pop();
+
+  
 //SKIBRILLE
 image(goggles,512,384);
+fill('red');
+ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);
 
 
 }

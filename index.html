@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Abafahra</title>
+
     <script src="libraries/p5.js"></script>
     <script src="libraries/p5.dom.js"></script>
     <script src="libraries/p5.sound.js"></script>
@@ -8,7 +15,14 @@
     <script src="libraries/snowmachine.js"></script>
     <script src="libraries/dynamicthreshold.js"></script>
     <script src="sketch.js"></script>
-    <style> body {padding: 0; margin: 0;} </style>
+
+    <style> body {padding: 0; margin: 0;}  canvas {vertical-align: top;}
+    .statusbar-overlay {
+      opacity:0;
+      }
+    </style>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/zai_homescreen2.png">
   </head>
   <body>
   </body>

@@ -54,7 +54,7 @@ function snowMachine(n) {
     }
 
     machine.setCenter = function(x, y) {
-        pointForceCenter = createVector(width / 2, height / 2);
+        pointForceCenter = createVector(x, y);
     }
 
     machine.setPointForce = function(val) {
