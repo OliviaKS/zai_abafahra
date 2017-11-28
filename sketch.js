@@ -1,6 +1,6 @@
 //VERBINDUNG ZU MUSEGERÄT AUFBAUEN
-var muse = musedata.connect('http://127.0.1:8081');
-//var muse = musedata.fake();
+//var muse = musedata.connect('http://127.0.1:8081');
+var muse = musedata.fake();
 var tresh = dynamicThreshold();
 
 //SKIPISTE
@@ -14,10 +14,6 @@ var acc;
 var friction = 0.97;
 var force = 0.02;
 var slider;
-var PisteLinks;
-var PisteRechts;
-var PisteObenLinks;
-var PisteObenRechts;
 var wertSlider;
 
 //SCHNEE
@@ -106,10 +102,6 @@ function setup() {
   vel_mountains = 0;
   mountains_hoehe = 0;
   acc = createVector(0, 0);
-  PisteLinks = createVector(-700,height);
-  PisteRechts = createVector(700,height);
-  PisteObenLinks = createVector(0,0);
-  PisteObenRechts = createVector(0,0);
 
   //SCHNEE
   snow = snowMachine(200);
@@ -118,7 +110,6 @@ function setup() {
 
   //set the flake min size and max size
   snow.setFlakeSize(1.5,8);
-
 
   //SKI
   scale_ski = 0.5;
@@ -146,8 +137,9 @@ function draw() {
   var fitness = (_alpha - threshold);
 
   acc.set(0,2*fitness);
+  //acc.set()
   vel_fluchtpunkt.add(acc);
-  vel_fluchtpunkt.mult(0.97);
+  vel_fluchtpunkt.mult(0.98);
   //Widerstand eingebaut durch mult - sobald keine acc mehr geht vel weg bis 0
   fluchtpunkt.add(vel_fluchtpunkt);
 
@@ -171,6 +163,7 @@ function draw() {
   fill('purple');
   text('Alpha ' + _alpha*100,20,60);
   text('Dyn. Schwelle ' + threshold*100,20,80);
+  text('Fitness ' + fitness*100,20,100);
 
 
   //HINTERGRUND SKIPISTE
@@ -204,7 +197,7 @@ function draw() {
 
 
   fill('purple');
-  text('Fluchtpunkt.y ' + fluchtpunkt.y, 20,100);
+  text('Fluchtpunkt.y ' + fluchtpunkt.y, 20,120);
 
 
 //SKI ROTATION
@@ -229,7 +222,7 @@ function draw() {
   image(linkerSki2,0,0);
   pop();*/
 
-  push();
+ /*push();
   translate(467,1090);
   rotationLinks = map(fluchtpunkt.y,0,height-150,25,0);
   var xCorrection = constrain(xCorrection,268,467);
@@ -237,7 +230,19 @@ function draw() {
   translate(xCorrection,0);
   rotate(rotationLinks);
   image(linkerSki2,0,0);
+  pop();*/
+
+  push();
+  translate(467,1090);
+  rotationLinks = map(fluchtpunkt.y,0,height-150,25,0);
+  //var xCorrection = constrain(xCorrection,268,467);
+  var xCorrection = constrain(xCorrection,-199,0);
+  xCorrection = -rotationLinks*7;
+  translate(xCorrection,0);
+  rotate(rotationLinks);
+  image(linkerSki2,0,0);
   pop();
+
 
 
 
@@ -265,12 +270,23 @@ function draw() {
   push();
   translate(557,1090);
   rotationRechts = map(fluchtpunkt.y,0,height-150,-25,0);
-  var xCorrectionRechts = constrain(xCorrectionRechts,557,756);
+  //var xCorrectionRechts = constrain(xCorrectionRechts,557,756);
+  var xCorrectionRechts = constrain(xCorrectionRechts,0,199);
   xCorrectionRechts = -rotationRechts*7;
-  translate(xCorrection,0);
+  translate(xCorrectionRechts,0);
   rotate(rotationRechts);
   image(rechterSki2,0,0);
   pop();
+
+  /*push();
+  translate(557,1090);
+  rotationRechts = map(fluchtpunkt.y,0,height-150,-25,0);
+  var xCorrectionRechts = constrain(xCorrectionRechts,0,199);
+  xCorrectionRechts = rotationRechts*7;
+  translate(xCorrectionRechts,0);
+  rotate(rotationRechts);
+  image(rechterSki2,0,0);
+  pop();*/
 
   
 //SKIBRILLE
