@@ -117,7 +117,7 @@ function setup() {
 
   //SLIDER
   slider = createSlider (0,0.7,0.1,0);
-  slider.position(20,60);
+  slider.position(30,60);
   slider.style('width','200px');
 
 }
@@ -133,14 +133,14 @@ function draw() {
 
   //ALPHA-WERTE HOLEN
   var _alpha = muse.getAlpha();
-  //var _alpha = wertSlider;
+  var _alpha = wertSlider;
   var threshold = tresh.threshold(_alpha);
   var fitness = (_alpha - threshold);
 
-  acc.set(0,2*fitness);
+  acc.set(0,1*fitness);
   //acc.set()
   vel_fluchtpunkt.add(acc);
-  vel_fluchtpunkt.mult(0.98);
+  vel_fluchtpunkt.mult(0.97);
   //Widerstand eingebaut durch mult - sobald keine acc mehr geht vel weg bis 0
   fluchtpunkt.add(vel_fluchtpunkt);
 
@@ -162,9 +162,9 @@ function draw() {
 
  //text('Max. AlphaWert ' + wertSlider,20,90);
   fill('purple');
-  text('Alpha ' + _alpha*100,20,60);
-  text('Dyn. Schwelle ' + threshold*100,20,80);
-  text('Fitness ' + fitness*100,20,100);
+  text('Alpha ' + _alpha*100,30,60);
+  text('Dyn. Schwelle ' + threshold*100,30,90);
+  text('Fitness ' + fitness*100,30,110);
 
 
   //HINTERGRUND SKIPISTE
@@ -197,9 +197,8 @@ function draw() {
   snow.setCenter(width/2,fluchtpunkt.y);
   snow.draw();
 
-
   fill('purple');
-  text('Fluchtpunkt.y ' + fluchtpunkt.y, 20,120);
+  text('Fluchtpunkt.y ' + fluchtpunkt.y, 30,130);
 
 
 //SKI ROTATION
