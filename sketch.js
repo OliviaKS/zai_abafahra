@@ -48,12 +48,7 @@ var dir_mountains;
 var y_sky = 0;
 var dir_sky = 0;
 var vel_sky = 10;
-var sky;
-var sky2;
-var sky3;
-var sky4;
-var sky5;
-var sky6;
+var sky7;
 
 //BRILLE
 var goggles;
@@ -62,11 +57,6 @@ function preload(){
   linkerSki2 = loadImage('img/ski_zai_v3.png');
   rechterSki2 = loadImage('img/ski_zai_v3.png');
   mountains = loadImage('img/mountain_bg.png');
-  sky = loadImage('img/sky_v1.png');
-  sky3 = loadImage('img/sky_v3.png');
-  sky4 = loadImage('img/sky_v4.png');
-  sky5 = loadImage('img/sky_v5.png');
-  sky6 = loadImage('img/sky_v6.png');
   sky7 = loadImage('img/sky_v7.png');
   goggles = loadImage('img/goggles.png');
 }
@@ -89,7 +79,6 @@ function setup() {
 
   //ENDPUNKTE SKIPISTE GENERIEREN
   for (var i = 0; i < n; i++) {
-   // var x = map(i, 0, n, -700, width + 700);
     //var x = map(i,0,n,-1400,width+1400);
     var x = map(i,0,n,-6300,width+6300);
     var y = height;
@@ -116,9 +105,9 @@ function setup() {
   scale_ski = 0.5;
 
   //SLIDER
-  slider = createSlider (0,0.7,0.1,0);
+ /*slider = createSlider (0,0.7,0.1,0);
   slider.position(30,60);
-  slider.style('width','200px');
+  slider.style('width','200px');*/
 
 }
 
@@ -129,11 +118,11 @@ function draw() {
   fill('white');
 
   //SLIDER
-  wertSlider = slider.value();
+  //wertSlider = slider.value();
 
   //ALPHA-WERTE HOLEN
   var _alpha = muse.getAlpha();
-  var _alpha = wertSlider;
+  //var _alpha = wertSlider;
   var threshold = tresh.threshold(_alpha);
   var fitness = (_alpha - threshold);
 
@@ -161,10 +150,10 @@ function draw() {
 
 
  //text('Max. AlphaWert ' + wertSlider,20,90);
-  fill('purple');
+  /*fill('purple');
   text('Alpha ' + _alpha*100,30,60);
   text('Dyn. Schwelle ' + threshold*100,30,90);
-  text('Fitness ' + fitness*100,30,110);
+  text('Fitness ' + fitness*100,30,110);*/
 
 
   //HINTERGRUND SKIPISTE
@@ -182,10 +171,8 @@ function draw() {
     var aktuellerEndpunkt = endpunkte[i];
     var v = p5.Vector.lerp(aktuellerEndpunkt,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
     //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);
-    //stroke('#eef8fc'); --> erst bei finaler Version, zum pröbeln mit schwarz arbeiten
-    //stroke('#dbdfe1');
     //stroke('#d8dad9');
-    stroke(216,218,217,210);
+    stroke(216,218,217,225);
     line(v.x,v.y,aktuellerEndpunkt.x,aktuellerEndpunkt.y);
   }
 
@@ -197,8 +184,8 @@ function draw() {
   snow.setCenter(width/2,fluchtpunkt.y);
   snow.draw();
 
-  fill('purple');
-  text('Fluchtpunkt.y ' + fluchtpunkt.y, 30,130);
+  /*fill('purple');
+  text('Fluchtpunkt.y ' + fluchtpunkt.y, 30,130);*/
 
 
 //SKI ROTATION
@@ -229,8 +216,8 @@ function draw() {
   
 //SKIBRILLE
 image(goggles,512,384);
-fill('red');
-ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);
+/*fill('red');
+ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);*/
 
 
 }
