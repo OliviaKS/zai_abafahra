@@ -105,9 +105,9 @@ function setup() {
   scale_ski = 0.5;
 
   //SLIDER
- /*slider = createSlider (0,0.7,0.1,0);
+  slider = createSlider (0,0.7,0.1,0);
   slider.position(30,60);
-  slider.style('width','200px');*/
+  slider.style('width','200px');
 
 }
 
@@ -118,16 +118,15 @@ function draw() {
   fill('white');
 
   //SLIDER
-  //wertSlider = slider.value();
+  wertSlider = slider.value();
 
   //ALPHA-WERTE HOLEN
   var _alpha = muse.getAlpha();
-  //var _alpha = wertSlider;
+  var _alpha = wertSlider;
   var threshold = tresh.threshold(_alpha);
   var fitness = (_alpha - threshold);
 
   acc.set(0,1*fitness);
-  //acc.set()
   vel_fluchtpunkt.add(acc);
   vel_fluchtpunkt.mult(0.97);
   //Widerstand eingebaut durch mult - sobald keine acc mehr geht vel weg bis 0
@@ -150,10 +149,10 @@ function draw() {
 
 
  //text('Max. AlphaWert ' + wertSlider,20,90);
-  /*fill('purple');
+  fill('purple');
   text('Alpha ' + _alpha*100,30,60);
-  text('Dyn. Schwelle ' + threshold*100,30,90);
-  text('Fitness ' + fitness*100,30,110);*/
+  //text('Dyn. Schwelle ' + threshold*100,30,90);
+  //text('Fitness ' + fitness*100,30,110);
 
 
   //HINTERGRUND SKIPISTE
