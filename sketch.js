@@ -99,15 +99,15 @@ function setup() {
   snow.setCenter(width/2,height/2);
 
   //set the flake min size and max size
-  snow.setFlakeSize(1.5,8);
+  snow.setFlakeSize(1.5,10);
 
   //SKI
   scale_ski = 0.5;
 
   //SLIDER
-  slider = createSlider (0,0.7,0.1,0);
+  /*slider = createSlider (0,0.7,0.1,0);
   slider.position(30,60);
-  slider.style('width','200px');
+  slider.style('width','200px');*/
 
 }
 
@@ -118,11 +118,11 @@ function draw() {
   fill('white');
 
   //SLIDER
-  wertSlider = slider.value();
+  //wertSlider = slider.value();
 
   //ALPHA-WERTE HOLEN
   var _alpha = muse.getAlpha();
-  var _alpha = wertSlider;
+  //var _alpha = wertSlider;
   var threshold = tresh.threshold(_alpha);
   var fitness = (_alpha - threshold);
 
@@ -164,20 +164,21 @@ function draw() {
 
 
   //SKI-RILLEN ZEICHNEN
-  //stroke('#eef8fc');
-  stroke('#dbdfe1');
+  //stroke('#dbdfe1');
+  //stroke('#e8eced');
+  stroke('#edefef');
+  strokeWeight(2.8);
   for (var i = 0; i < endpunkte.length; i++) {
     var aktuellerEndpunkt = endpunkte[i];
     var v = p5.Vector.lerp(aktuellerEndpunkt,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
-    //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);
-    //stroke('#d8dad9');
-    stroke(216,218,217,225);
+    //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);  
     line(v.x,v.y,aktuellerEndpunkt.x,aktuellerEndpunkt.y);
   }
 
 
   //SCHNEEFLOCKEN
   //point force um Forwärtsgeschwindigkeit zu simulieren
+  //snow.setFlakeSize(map(fluchtpunkt.y,0,height-150,5,1.5),map(fluchtpunkt.y,0,height-150,12,8));
   var pforce = map(fluchtpunkt.y,0,height-150, 0, 0.65);
   snow.setPointForce(pforce);
   snow.setCenter(width/2,fluchtpunkt.y);

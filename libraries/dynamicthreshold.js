@@ -4,7 +4,7 @@ function dynamicThreshold(_n, _difficulty) {
     var thres = 0;
     var difficulty = _difficulty || 0.85;
     //how many measurements to take into account
-    var n = _n || 200;
+    var n = _n || 300;
 
     function my() {
 
