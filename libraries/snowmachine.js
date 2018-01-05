@@ -1,7 +1,8 @@
 function snowMachine(n) {
     "use strict";
     //snow library based on https://www.openprocessing.org/sketch/395389
-    var quantity = n || 800;
+    //var quantity = n || 800;
+    var quantity = n || map(fluchtpunkt.y,0,height-150,900,400);
     var xPosition = [];
     var yPosition = [];
     var flakeSize = [];
@@ -80,7 +81,10 @@ function snowMachine(n) {
             if (pointForce > 0 && age[i] < appearTime) {
                 opacity = map(age[i], 0, appearTime, 0, 255);
             }
-            fill(255, opacity);
+            //fill(255, opacity);
+            //fill(250,opacity);
+            //fill('#fff5e6');
+            fill('#edefef');
             noStroke();
             ellipse(xPosition[i], yPosition[i], flakeSize[i], flakeSize[i]);
 

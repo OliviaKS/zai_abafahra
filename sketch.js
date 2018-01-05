@@ -1,3 +1,28 @@
+/* var fpsArray = [];
+var fpsCount = 0;
+var stopEinleitung = 15;
+var stopEchtzeit = 75;
+
+function draw(){
+  fpsCount++;
+  fps = fpsCount;
+  fpsArray.push(fps);
+
+  if(fpsArray[fpsArray.lenght] >= stopEinleitung && fpsArray.lenght < stopEchtzeit){
+    drawEchtzeit();
+  }
+  else if(fpsArray[fpsArray.lenght] >= stopEchtzeit){
+    drawDashboard();
+  }
+  else(){
+  drawEinleitung();
+  }
+  }
+
+
+*/
+
+
 //VERBINDUNG ZU MUSEGERÄT AUFBAUEN
 //var muse = musedata.connect('http://127.0.1:8081');
 var muse = musedata.fake();
@@ -112,7 +137,8 @@ function setup() {
 }
 
 
-function draw() {
+//function drawEchtzeit() {
+  function draw(){
   //BASICS
   background('#d7eef9')
   fill('white');
@@ -147,6 +173,8 @@ function draw() {
   y_mountains = map(fluchtpunkt.y,0,height-150,600,500);
   image(mountains,512,y_mountains);
 
+  //Speichern der AlphaWerte für Dashboard
+
 
  //text('Max. AlphaWert ' + wertSlider,20,90);
   fill('purple');
@@ -179,7 +207,7 @@ function draw() {
   //SCHNEEFLOCKEN
   //point force um Forwärtsgeschwindigkeit zu simulieren
   //snow.setFlakeSize(map(fluchtpunkt.y,0,height-150,5,1.5),map(fluchtpunkt.y,0,height-150,12,8));
-  var pforce = map(fluchtpunkt.y,0,height-150, 0, 0.65);
+  var pforce = map(fluchtpunkt.y,0,height-150, 0, 1);
   snow.setPointForce(pforce);
   snow.setCenter(width/2,fluchtpunkt.y);
   snow.draw();
@@ -219,5 +247,8 @@ image(goggles,512,384);
 /*fill('red');
 ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);*/
 
-
 }
+
+/*function drawDashboard(){
+
+}*/
