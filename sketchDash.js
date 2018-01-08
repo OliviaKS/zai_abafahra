@@ -80,6 +80,9 @@ var goggles;
 
 //DASHBOARD
 var alphaWerte = [];
+//var sliderDB;
+//var wertSliderDB;
+
 
 function preload(){
   linkerSki2 = loadImage('img/ski_zai_v3.png');
@@ -132,10 +135,14 @@ function setup() {
   //SKI
   scale_ski = 0.5;
 
-  //SLIDER
+  //SLIDER UM ALPHAWERTE ZU TESTEN
   /*slider = createSlider (0,0.7,0.1,0);
   slider.position(30,60);
   slider.style('width','200px');*/
+
+  //SLIDER FÜR DASHBOARD --> keine senkrechten Slider möglich!!
+  /*sliderDB = createSlider (0,100,0,1);
+  slider.position()*/
 
 }
 
@@ -193,7 +200,6 @@ function setup() {
 
 
   //HINTERGRUND SKIPISTE
-  //noch nicht elegant -- gleicher Code folgt unten in for-Schlaufe
   var v = p5.Vector.lerp(endpunkte[0],fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
   fill('#fcfcfc');
   noStroke();
