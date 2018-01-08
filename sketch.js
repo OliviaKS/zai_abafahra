@@ -8,10 +8,10 @@
     fps = fpsCount;
     fpsArray.push(fps);
 
-    if(fpsArray[fpsArray.lenght] >= stopEinleitung && fpsArray.lenght < stopEchtzeit){
+    if(fpsArray[fpsArray.length] >= stopEinleitung && fpsArray.length < stopEchtzeit){
       drawEchtzeit();
     }
-    else if(fpsArray[fpsArray.lenght] >= stopEchtzeit){
+    else if(fpsArray[fpsArray.length] >= stopEchtzeit){
       drawDashboard();
     }
     else(){
@@ -86,6 +86,8 @@
   //DASHBOARD
   var alphaWerte = [];
   var fitnessGrenze = 0;
+  //var sliderDB;
+  //var wertSliderDB;
 
   function preload(){
     linkerSki2 = loadImage('img/ski_zai_v3.png');
@@ -142,6 +144,10 @@
     /*slider = createSlider (0,0.7,0.1,0);
     slider.position(30,60);
     slider.style('width','200px');*/
+
+    //SLIDER FÜR DASHBOARD --> keine senkrechten Slider möglich!!
+    /*sliderDB = createSlider (0,100,0,1);
+    slider.position()*/
 
   }
 
@@ -299,14 +305,14 @@
     //SLIDER
     //wertSlider = slider.value();
 
-    //BERECHNUNG DES RUNTERFAHREN-ZUSTANDS
+    //BERECHNUNG DES DURCHSCHNITTLICHEN RUNTERFAHREN-ZUSTANDS
     for(var i=0, n=alphaWerte.length; i < n; i++){
       var SummeAlphaWerte = SummeAlphaWerte + alphaWerte[i];
     }
 
     var MaxEntspannt = alphaWerte.length*1;
     var SehrEntspannt = (alphaWerte.length*1) * 0.7;
-    var MittelEntspannt = (alphaWerte.length*1) * 0.3;
+    var MittelEntspannt = (alphaWerte.length*1) * 0.4;
 
     fluchtpunkt = createVector(width/2, map(SummeAlphaWerte,0,MaxEntspannt,0,height-150));
 
@@ -376,7 +382,8 @@
     
   //SKIBRILLE
   image(goggles,512,384);
-  /*fill('red');
-  ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);*/
+  fill('red');
+  console.log('Summe AlphaWerte ' + SummeAlphaWerte + ' / ' + 'Anz. Werte ' + SummeAlphaWerte.length);
+  //ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);
 
   }
