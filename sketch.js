@@ -1,27 +1,3 @@
-  /* var fpsArray = [];
-  var fpsCount = 0;
-  var stopEinleitung = 15;
-  var stopEchtzeit = 75;
-
-  function draw(){
-    fpsCount++;
-    fps = fpsCount;
-    fpsArray.push(fps);
-
-    if(fpsArray[fpsArray.length] >= stopEinleitung && fpsArray.length < stopEchtzeit){
-      drawEchtzeit();
-    }
-    else if(fpsArray[fpsArray.length] >= stopEchtzeit){
-      drawDashboard();
-    }
-    else(){
-    drawEinleitung();
-    }
-    }
-
-
-  */
-
   var dashboard = 'dashboard';
   var echtzeit = 'echtzeit';
   var einleitung = 'einleitung';
@@ -31,7 +7,10 @@
   //VERBINDUNG ZU MUSEGERÄT AUFBAUEN
   //var muse = musedata.connect('http://127.0.1:8081');
   var muse = musedata.fake();
-  var tresh = dynamicThreshold();
+  var tresh = dynamicThreshold(200,0.95);
+
+  //STARTBILDSCHIRM
+  var startbildschirm;
 
   //SKIPISTE
   //var n = 130;
@@ -90,6 +69,7 @@
   //var wertSliderDB;
 
   function preload(){
+    startbildschirm = loadImage('img/startbildschirm3.jpg');
     linkerSki2 = loadImage('img/ski_zai_v3.png');
     rechterSki2 = loadImage('img/ski_zai_v3.png');
     mountains = loadImage('img/mountain_bg.png');
@@ -178,8 +158,9 @@
   function drawEinleitung(){
     //hier Einstieg mit kurzem Tutorial und Button, um zu starten
     //BASICS
-    background('#d7eef9');
-    fill('white');
+    /*background('#d7eef9');
+    fill('white');*/
+    image(startbildschirm,width/2,height/2);
   }
 
 
@@ -199,7 +180,7 @@
 
     acc.set(0,1*fitness);
     vel_fluchtpunkt.add(acc);
-    vel_fluchtpunkt.mult(0.97);
+    vel_fluchtpunkt.mult(0.99);
     //Widerstand eingebaut durch mult - sobald keine acc mehr geht vel weg bis 0
     fluchtpunkt.add(vel_fluchtpunkt);
 
