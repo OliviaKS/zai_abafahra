@@ -194,6 +194,8 @@
     //SLIDER
     //wertSlider = slider.value();
 
+    console.log('alpha: ' + muse.getAlpha());
+
     //ALPHA-WERTE HOLEN
     var _alpha = muse.getAlpha();
     //var _alpha = wertSlider;
