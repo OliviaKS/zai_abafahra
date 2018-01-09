@@ -308,7 +308,7 @@
     //BERECHNUNG DES DURCHSCHNITTLICHEN RUNTERFAHREN-ZUSTANDS
     var SummeAlphaWerte = 0;
     for(var i=0, n=alphaWerte.length; i < n; i++){
-      var SummeAlphaWerte = SummeAlphaWerte + alphaWerte[i];
+      //var SummeAlphaWerte = SummeAlphaWerte + alphaWerte[i];
       SummeAlphaWerte = SummeAlphaWerte + alphaWerte[i];
     }
 
