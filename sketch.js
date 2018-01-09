@@ -175,6 +175,7 @@
     } else if (state == 'echtzeit'){
       state = 'dashboard';
     } else if (state == 'dashboard'){
+      var alphaWerte = [];
       state = 'einleitung';
     }
   }
@@ -395,7 +396,8 @@
     ellipse(962,v.y,10,10);
 
     //BERECHNUNG ENTSPANNUNGSWERT
-    var UserEntspannt = (SummeAlphaWerte/alphaWerte.length*100);
+    var UserEntspannt = round(SummeAlphaWerte/alphaWerte.length*100);
+    //var UserEntspanntRnd = math.round(UserEntspannt);
     noStroke();
     text(UserEntspannt + '%',919,v.y);
 
