@@ -22,8 +22,8 @@
   var acc;
   var friction = 0.97;
   var force = 0.02;
-  var slider;
-  var wertSlider;
+  /*var slider;
+  var wertSlider;*/
 
   //SCHNEE
   var snow;
@@ -65,16 +65,32 @@
   //DASHBOARD
   var alphaWerte = [];
   var fitnessGrenze = 0;
+  var Titel_Feedback;
+  var SehrEntspannt_Feedback;
+  var MittelEntspannt_Feedback;
+  var Unentspannt_Feedback;
+  var barometer;
+  var barometer_bg;
+  var barometer_text;
   //var sliderDB;
   //var wertSliderDB;
 
   function preload(){
     startbildschirm = loadImage('img/startbildschirm3.jpg');
+
     linkerSki2 = loadImage('img/ski_zai_v3.png');
     rechterSki2 = loadImage('img/ski_zai_v3.png');
     mountains = loadImage('img/mountain_bg.png');
     sky7 = loadImage('img/sky_v7.png');
     goggles = loadImage('img/goggles.png');
+
+    Titel_Feedback = loadImage('img/abafahra_titel.png');
+    SehrEntspannt_Feedback = loadImage('img/SehrEntspannt2.png');
+    MittelEntspannt_Feedback = loadImage('img/MittelEntspannt2.png');
+    Unentspannt_Feedback = loadImage('img/Unentspannt2.png');
+    barometer = loadImage('img/barometer.png');
+    barometer_bg = loadImage('img/barometer_weiss.png');
+    barometer_text = loadImage('img/barometer_text.png');
   }
 
 
@@ -146,6 +162,15 @@
   //Wechsel des States
   function mousePressed(){
     if (state == 'einleitung'){
+      y_sky = 384;
+      dir_sky = 0;
+      y_mountains = 550;
+      dir_mountains = 0;
+      vel_fluchtpunkt = createVector(0, 0);
+      fluchtpunkt = createVector(width / 2, height / 2);
+      vel_mountains = 0;
+      mountains_hoehe = 0;
+      var alphaWerte = [];
       state = 'echtzeit';
     } else if (state == 'echtzeit'){
       state = 'dashboard';
@@ -156,10 +181,6 @@
 
 
   function drawEinleitung(){
-    //hier Einstieg mit kurzem Tutorial und Button, um zu starten
-    //BASICS
-    /*background('#d7eef9');
-    fill('white');*/
     image(startbildschirm,width/2,height/2);
   }
 
@@ -243,7 +264,8 @@
     snow.draw();
 
     /*fill('purple');
-    text('Fluchtpunkt.y ' + fluchtpunkt.y, 30,130);*/
+    text('Fluchtpunkt.y ' + fluchtpunkt.y, 30,130);
+    text('V.y ' + v.y, 30,160);*/
 
     //SKI ROTATION
     push();
@@ -294,7 +316,7 @@
     }
 
     var MaxEntspannt = alphaWerte.length*1;
-    var SehrEntspannt = (alphaWerte.length*1) * 0.7;
+    var SehrEntspannt = (alphaWerte.length*1) * 0.8;
     var MittelEntspannt = (alphaWerte.length*1) * 0.4;
 
     fluchtpunkt = createVector(width/2, map(SummeAlphaWerte,0,MaxEntspannt,0,height-150));
@@ -320,16 +342,18 @@
 
 
     //SKI-RILLEN ZEICHNEN
-    //stroke('#dbdfe1');
-    //stroke('#e8eced');
     stroke('#edefef');
     strokeWeight(2.8);
     for (var i = 0; i < endpunkte.length; i++) {
       var aktuellerEndpunkt = endpunkte[i];
       var v = p5.Vector.lerp(aktuellerEndpunkt,fluchtpunkt,map(fluchtpunkt.y,0,height-150,0.5,1));
-      //line(fluchtpunkt.x, fluchtpunkt.y, endpunkte[i].x, endpunkte[i].y);  
       line(v.x,v.y,aktuellerEndpunkt.x,aktuellerEndpunkt.y);
     }
+
+    //DURCHSCHNITTSWERT SKIPISTE - HORIZONT LINIE
+    stroke('#d89a9a');
+    line(0,v.y,width,v.y);
+
 
     //SCHNEEFLOCKEN
     var pforce = map(fluchtpunkt.y,0,height-150, 0, 1);
@@ -337,8 +361,46 @@
     snow.setCenter(width/2,fluchtpunkt.y);
     snow.draw();
 
+    //FEEDBACK AN USER
+    image(Titel_Feedback,width/2, 100);
+    if (SummeAlphaWerte >= SehrEntspannt){
+      image(SehrEntspannt_Feedback,512,140);
+    }
+    else if (SummeAlphaWerte >= MittelEntspannt && SummeAlphaWerte < SehrEntspannt){
+      image(MittelEntspannt_Feedback,512,150);
+    }
+    else{
+      image(Unentspannt_Feedback,512,140);
+    }
 
-  //SKI ROTATION
+    //BAROMETER
+    image(barometer_bg,970,height/2);
+    strokeWeight(1);
+    //stroke('#5d5f5e');
+    noStroke();
+    fill('#dadada');
+    rect(957,378,10,240,20);
+    //image(barometer,975,400);
+    /*stroke('#575756');
+    fill('#575756');*/
+    fill('#575756');
+    textSize(12);
+    text('0%',972,388);
+    text('100%',972,618);
+    textSize(12);
+   // text('Entspannigsbarometer',895,360);
+    image(barometer_text,957,360);
+    stroke('#d89a9a');
+    fill('#d89a9a');
+    ellipse(962,v.y,10,10);
+
+    //BERECHNUNG ENTSPANNUNGSWERT
+    var UserEntspannt = (SummeAlphaWerte/alphaWerte.length*100);
+    noStroke();
+    text(UserEntspannt + '%',919,v.y);
+
+
+    //SKI ROTATION
     push();
     translate(467,1090);
     rotationLinks = map(fluchtpunkt.y,0,height-150,25,0);
