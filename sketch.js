@@ -306,8 +306,10 @@
     //wertSlider = slider.value();
 
     //BERECHNUNG DES DURCHSCHNITTLICHEN RUNTERFAHREN-ZUSTANDS
+    var SummeAlphaWerte = 0;
     for(var i=0, n=alphaWerte.length; i < n; i++){
       var SummeAlphaWerte = SummeAlphaWerte + alphaWerte[i];
+      SummeAlphaWerte = SummeAlphaWerte + alphaWerte[i];
     }
 
     var MaxEntspannt = alphaWerte.length*1;
@@ -383,7 +385,8 @@
   //SKIBRILLE
   image(goggles,512,384);
   fill('red');
-  console.log('Summe AlphaWerte ' + SummeAlphaWerte + ' / ' + 'Anz. Werte ' + SummeAlphaWerte.length);
+  //console.log('Summe AlphaWerte ' + SummeAlphaWerte + ' / ' + 'Anz. Werte ' + SummeAlphaWerte.length);
+  console.log('Summe AlphaWerte ' + SummeAlphaWerte + ' / ' + 'Anz. Werte ' + alphaWerte.length);
   //ellipse(fluchtpunkt.x,fluchtpunkt.y,10,10);
 
   }
