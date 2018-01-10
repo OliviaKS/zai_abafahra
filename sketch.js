@@ -185,6 +185,7 @@
     //SLIDER
     //wertSlider = slider.value();
 
+
     //ALPHA-WERTE HOLEN
     var _alpha = muse.getAlpha();
     //var _alpha = wertSlider;
